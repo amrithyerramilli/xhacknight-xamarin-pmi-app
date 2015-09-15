@@ -12,7 +12,7 @@ namespace Match.AI.Pages
         public ProfilePage()
         {
             // set the binding context for the entire page to the App user
-            BindingContext = App._User;
+            BindingContext = App.User;
 
             // design the profile page layout
             // based on : https://www.syntaxismyui.com/xamarin-forms-in-anger-phoenix-peaks/
@@ -65,12 +65,36 @@ namespace Match.AI.Pages
                 TextColor = Color.FromHex("#ddd"),
             };
             descriptionLabel.SetBinding(Label.TextProperty, "bio");
+
+            var traitsLayout = new StackLayout();
+            traitsLayout.Orientation = StackOrientation.Vertical;
+            traitsLayout.Children.Add(descriptionLabel);
+            
+            for (int i = 0; i < App.User.PersonalityTraits.Count; i++)
+            {
+                var trait = App.User.PersonalityTraits[i];
+                var nameLabel = new Label();
+                nameLabel.FontSize = 14;
+                nameLabel.TextColor = Color.Gray;
+                nameLabel.SetBinding(Label.TextProperty, "Name");
+                nameLabel.BindingContext = trait;
+                
+                var valueLabel = new Label();
+                valueLabel.FontSize = 16;
+                valueLabel.TextColor = Color.White;
+                valueLabel.SetBinding(Label.TextProperty, "Value");
+                valueLabel.BindingContext = trait;
+
+                traitsLayout.Children.Add(nameLabel);
+                traitsLayout.Children.Add(valueLabel);
+
+            }
             var description = new Frame()
             {
                 Padding = new Thickness(10, 5),
                 HasShadow = false,
                 BackgroundColor = Color.Transparent,
-                Content = descriptionLabel
+                Content = traitsLayout
             };
 
             AbsoluteLayout.SetLayoutFlags(overlay, AbsoluteLayoutFlags.All);
