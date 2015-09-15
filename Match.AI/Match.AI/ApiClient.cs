@@ -16,7 +16,7 @@ namespace Match.AI
             var client = new HttpClient();
             var access_token = App.Token;
 
-            string fields = "id,name,posts{message},about,bio";
+            string fields = "id,name,posts{message},about,bio,picture";
             string apiVersion = "v2.4";
             var apiEndpointUrl = string.Format("https://graph.facebook.com/{0}/me?fields={1}&access_token={2}", apiVersion, fields, access_token);
 
