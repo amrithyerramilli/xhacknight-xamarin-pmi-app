@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Match.AI
 {
@@ -53,6 +54,42 @@ namespace Match.AI
             }
         }
         public string personality { get; set; }
+
+        public List<Blah> PersonalityTraits
+        {
+            get
+            {
+                var l = new List<Blah>();
+                JArray p = null;
+                if (!String.IsNullOrEmpty(personality))
+                {
+                    var x = JObject.Parse(personality);
+                    var big5 = JArray.FromObject(x["tree"]["children"][0]["children"][0]["children"]);
+                    p = big5;
+                }
+
+                if (p != null)
+                {
+                    foreach (var trait in p)
+                    {
+                        var x = new Blah();
+                        x.Name = trait["name"].Value<string>();
+                        x.Value =
+                            Math.Round(trait["percentage"].Value<decimal>()*100, 2, MidpointRounding.AwayFromZero)
+                                .ToString();
+                        l.Add(x);
+                    }
+                }
+                return l;
+            }
+        }
+        public List<Blah> MatchData { get; set; } 
+    }
+
+    public class Blah
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 
 
