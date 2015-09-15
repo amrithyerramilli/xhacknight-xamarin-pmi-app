@@ -23,9 +23,10 @@ namespace Match.AI
         public App()
         {
             // The root page of your application
+            // user_birthday, user_friends, user_about_me, user_status, user_posts, email, public_profile
             OAuthSettings = new OAuthSettings(
                                     clientId: "",
-                                    scope: "public_profile,email,user_friends,user_about_me,user_status",
+                                    scope: "user_birthday,user_friends,user_about_me,user_status,user_posts,email,public_profile",
                                     authorizeUrl: "https://m.facebook.com/dialog/oauth/",
                                     redirectUrl: "http://www.facebook.com/connect/login_success.html");
             AppUsers = InitializeUsers();
