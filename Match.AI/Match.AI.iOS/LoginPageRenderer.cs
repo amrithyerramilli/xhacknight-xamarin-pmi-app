@@ -1,33 +1,21 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Xamarin.Forms.Platform.Android;
-using Match.AI;
+using Match.AI.iOS;
 using Match.AI.Pages;
-using Match.AI.Droid;
 using Xamarin.Auth;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
+[assembly: ExportRenderer(typeof(LoginPage), typeof(LoginPageRenderer))]
 
-[assembly: ExportRenderer(typeof(Match.AI.Pages.LoginPage), typeof(LoginPageRenderer))]
-namespace Match.AI.Droid
+namespace Match.AI.iOS
 {
     public class LoginPageRenderer : PageRenderer
     {
-        protected override void OnElementChanged(ElementChangedEventArgs<Page> e)
+        public override void ViewDidAppear(bool animated)
         {
-            base.OnElementChanged(e);
-
-            // this is a ViewGroup - so should be able to load an AXML file and FindView<>
-            var activity = this.Context as Activity;
+            base.ViewDidAppear(animated);
 
             var auth = new OAuth2Authenticator(
                 clientId: App._OAuthSettings.ClientId, // your OAuth2 client id
@@ -37,9 +25,11 @@ namespace Match.AI.Droid
 
             auth.Completed += (sender, eventArgs) =>
             {
+                // We presented the UI, so it's up to us to dimiss it on iOS.
+                App.SuccessfulLoginAction.Invoke();
+
                 if (eventArgs.IsAuthenticated)
                 {
-                    App.SuccessfulLoginAction.Invoke();
                     // Use eventArgs.Account to do wonderful things
                     App.SaveToken(eventArgs.Account.Properties["access_token"]);
                 }
@@ -51,7 +41,8 @@ namespace Match.AI.Droid
                 }
             };
 
-            activity.StartActivity(auth.GetUI(activity));
+            PresentViewController(auth.GetUI(), true, null);
         }
     }
 }
+
