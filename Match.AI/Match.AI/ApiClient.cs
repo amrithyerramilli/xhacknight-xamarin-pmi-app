@@ -32,30 +32,33 @@ namespace Match.AI
                 var values = new List<KeyValuePair<string, string>>();
                 //TODO : generate the text from the user's post's message data. Clean it up to remove invalid characters and send to bluemix.
                 List<string> messages = new List<string>();
-                foreach (var post in App.User.posts.data)
+                if (App.User.posts != null)
                 {
-                    string onlyAscii = post.message;
-                    try
+                    foreach (var post in App.User.posts.data)
                     {
-                        if (!String.IsNullOrEmpty(post.message))
-                            onlyAscii = Regex.Replace(post.message, @"[^\u0000-\u007F]", string.Empty, RegexOptions.None, TimeSpan.FromSeconds(1));
+                        string onlyAscii = post.message;
+                        try
+                        {
+                            if (!String.IsNullOrEmpty(post.message))
+                                onlyAscii = Regex.Replace(post.message, @"[^\u0000-\u007F]", string.Empty, RegexOptions.None, TimeSpan.FromSeconds(1));
+                        }
+                        catch (RegexMatchTimeoutException)
+                        {
+
+                            //throw;
+                        }
+
+                        //var moreCleanup = Regex.Replace(onlyAscii, @"[^\w\.@-\\%]", String.Empty);
+                        if (!String.IsNullOrEmpty(onlyAscii))
+                            messages.Add(onlyAscii);
                     }
-                    catch (RegexMatchTimeoutException)
-                    {
-                        
-                        //throw;
-                    }
-                    
-                    //var moreCleanup = Regex.Replace(onlyAscii, @"[^\w\.@-\\%]", String.Empty);
-                    if (!String.IsNullOrEmpty(onlyAscii))
-                    messages.Add(onlyAscii);
                 }
-                
-                var combined = String.Join(". ", messages);
-                //if (combined.Length < 100)
-                //{
-                    
-                //}
+                var bio = App.User.bio ?? "";
+                var combined = bio + "." + String.Join(". ", messages);
+                if (combined.Length < 100)
+                {
+
+                }
                 values.Add(new KeyValuePair<string, string>("text", combined));
 
                 var content = new FormUrlEncodedContent(values);
