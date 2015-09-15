@@ -28,11 +28,11 @@ namespace Match.AI.iOS
                 IsShown = true;
 
                 var auth = new OAuth2Authenticator(
-                    clientId: App._OAuthSettings.ClientId, // your OAuth2 client id
-                    scope: App._OAuthSettings.Scope,
+                    clientId: App.OAuthSettings.ClientId, // your OAuth2 client id
+                    scope: App.OAuthSettings.Scope,
                     // The scopes for the particular API you're accessing. The format for this will vary by API.
-                    authorizeUrl: new Uri(App._OAuthSettings.AuthorizeUrl), // the auth URL for the service
-                    redirectUrl: new Uri(App._OAuthSettings.RedirectUrl)); // the redirect URL for the service
+                    authorizeUrl: new Uri(App.OAuthSettings.AuthorizeUrl), // the auth URL for the service
+                    redirectUrl: new Uri(App.OAuthSettings.RedirectUrl)); // the redirect URL for the service
 
                 auth.Completed += (sender, eventArgs) =>
                 {

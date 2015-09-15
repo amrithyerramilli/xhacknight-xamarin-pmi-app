@@ -30,10 +30,10 @@ namespace Match.AI.Droid
             var activity = this.Context as Activity;
 
             var auth = new OAuth2Authenticator(
-                clientId: App._OAuthSettings.ClientId, // your OAuth2 client id
-                scope: App._OAuthSettings.Scope, // the scopes for the particular API you're accessing, delimited by "+" symbols
-                authorizeUrl: new Uri(App._OAuthSettings.AuthorizeUrl), // the auth URL for the service
-                redirectUrl: new Uri(App._OAuthSettings.RedirectUrl)); // the redirect URL for the service
+                clientId: App.OAuthSettings.ClientId, // your OAuth2 client id
+                scope: App.OAuthSettings.Scope, // the scopes for the particular API you're accessing, delimited by "+" symbols
+                authorizeUrl: new Uri(App.OAuthSettings.AuthorizeUrl), // the auth URL for the service
+                redirectUrl: new Uri(App.OAuthSettings.RedirectUrl)); // the redirect URL for the service
 
             auth.Completed += (sender, eventArgs) =>
             {
