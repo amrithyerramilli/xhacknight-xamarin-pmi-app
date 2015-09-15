@@ -14,8 +14,8 @@
                  Orientation="Vertical"
                  Spacing="15">
       <Button x:Name="loginButon" Text="Login" Clicked="OnLogin" />
-      <Button x:Name="profileButton" Text="Profile" IsEnabled="true" Clicked="OnProfile" />
-      <Button x:Name="reviewsButton" Text="Personalized Reviews" IsEnabled="true" Clicked="OnReviews" />
+      <Button x:Name="profileButton" Text="Profile" IsEnabled="false" Clicked="OnProfile" />
+      <Button x:Name="reviewsButton" Text="Personalized Reviews" IsEnabled="false" Clicked="OnReviews" />
     </StackLayout>
   </ContentPage.Content>
 </ContentPage>

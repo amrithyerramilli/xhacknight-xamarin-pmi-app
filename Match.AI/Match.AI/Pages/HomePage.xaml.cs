@@ -13,18 +13,15 @@ namespace Match.AI
         public HomePage()
         {
             InitializeComponent();
-            //Content = new StackLayout(){
-            //    VerticalOptions = LayoutOptions.FillAndExpand,
-            //    HorizontalOptions = LayoutOptions.FillAndExpand,
-            //    Spacing = 15,
-            //    Orientation = StackOrientation.Vertical,
-            //    Padding = new Thickness (0, 20, 0, 0),
-            //    Children = {button1, button2, button3, listView }
-            //}
-            //MessagingCenter.Subscribe<HomePage>(this, "Ready", (sender) =>
-            //{
-                
-            //});
+            MessagingCenter.Subscribe<HomePage>(this, "Ready", (sender) =>
+            {
+                //http://stackoverflow.com/questions/30241334/animators-may-only-be-run-on-looper-threads-during-on-device-intrumentation-te
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    profileButton.IsEnabled = true;
+                    reviewsButton.IsEnabled = true;
+                });
+            });
         }
 
         void OnLogin(object sender, EventArgs e)
@@ -41,7 +38,7 @@ namespace Match.AI
         }
         public void Notify(string message)
         {
-            MessagingCenter.Send<HomePage>(this, message);
+            MessagingCenter.Send(this, message);
         }
     }
 }
