@@ -25,10 +25,11 @@ namespace Match.AI
             {
                 var responseJsonString = await getUserDetailsTask.Content.ReadAsStringAsync();
                 var jsonData = JsonConvert.DeserializeObject<User>(responseJsonString);
-                App._User = jsonData;
+                App.User = jsonData;
 
                 // Make API call to fetch user's personality insights
                 var values = new List<KeyValuePair<string, string>>();
+                //TODO : generate the text from the user's post's message data. Clean it up to remove invalid characters and send to bluemix.
                 values.Add(new KeyValuePair<string, string>("text", @"
 Call me Ishmael. Some years ago-never mind how long precisely-having little or no money in my purse,
 and nothing particular to interest me on shore, I thought I would sail about a little and see the watery
@@ -179,7 +180,7 @@ hill in the air.
                 {
                     var jsonOut = await response.Content.ReadAsStringAsync();
                     var y = JsonConvert.DeserializeObject(jsonOut);
-                    App._User.personality = y.ToString();
+                    App.User.personality = y.ToString();
 
                     // Make API call to do bulk match of personalities and retreive the PMI
                     var client3 = new HttpClient();
@@ -188,11 +189,17 @@ hill in the air.
                     {
                         var matchDataString = await matchResponse.Content.ReadAsStringAsync();
                         JArray matchDataJson = (JArray)JsonConvert.DeserializeObject(matchDataString);
-                        App._HomePage.Notify("Ready");
                         for (int i = 0; i < matchDataJson.Count; i++)
                         {
-                            //BulkMatchList[i].matchData = JObject.FromObject(matchDataJson[i]);
+                            var j = JObject.FromObject(matchDataJson[i]);
+                            var matches = new List<Blah>();
+                            foreach (KeyValuePair<string, JToken> pair in j)
+                            {
+                                matches.Add(new Blah(){Name = pair.Key, Value = pair.Value.Value<String>()});
+                            }
+                            App.AppUsers[i].MatchData = matches;
                         }
+                        App.HomePage.Notify("Ready");
                     }
                 }
             }
