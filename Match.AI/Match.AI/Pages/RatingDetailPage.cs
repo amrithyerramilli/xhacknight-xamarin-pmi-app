@@ -67,7 +67,7 @@ namespace Match.AI.Pages
 
             var offLineLabel = new Label()
             {
-                TextColor = Color.FromHex("#ddd"),
+                TextColor = Color.Maroon,
                 FontSize = 12,
             };
             offLineLabel.SetBinding(Label.TextProperty, "User.MatchData[0].Value");
