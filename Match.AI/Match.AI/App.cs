@@ -12,6 +12,11 @@ namespace Match.AI
 {
     public class App : Application
     {
+        #region Configuration
+
+        public static string FacebookClientId = "";
+        public static string BluemixUrl = "";
+#endregion
         public static User User;
         public static OAuthSettings OAuthSettings;
         public static HomePage HomePage;
@@ -22,10 +27,8 @@ namespace Match.AI
 
         public App()
         {
-            // The root page of your application
-            // user_birthday, user_friends, user_about_me, user_status, user_posts, email, public_profile
             OAuthSettings = new OAuthSettings(
-                                    clientId: "",
+                                    clientId: FacebookClientId,
                                     scope: "user_birthday,user_friends,user_about_me,user_status,user_posts,email,public_profile",
                                     authorizeUrl: "https://m.facebook.com/dialog/oauth/",
                                     redirectUrl: "http://www.facebook.com/connect/login_success.html");
@@ -34,6 +37,7 @@ namespace Match.AI
             HomePage = new HomePage();
             NavPage = new NavigationPage(HomePage);
 
+            // The root page of your application
             MainPage = NavPage;
         }
 

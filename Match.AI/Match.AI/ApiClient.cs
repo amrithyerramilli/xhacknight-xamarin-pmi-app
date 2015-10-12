@@ -12,14 +12,21 @@ namespace Match.AI
 {
     public static class ApiClient
     {
+        public const string FacebookApiVersion = "v2.4";
+
+        public static readonly string FacebookBaseUrl = string.Format("https://graph.facebook.com/{0}",
+            FacebookApiVersion);
+
+        public static string BluemixMapUrl = App.BluemixUrl + "/map";
+        public static string BluemixBulkMatchUrl = App.BluemixUrl + "/bulk_match";
         public static async void GetUserInfo()
         {
             var client = new HttpClient();
             var access_token = App.Token;
 
             string fields = "id,name,posts.limit(200){message},about,bio,picture,cover";
-            string apiVersion = "v2.4";
-            var apiEndpointUrl = string.Format("https://graph.facebook.com/{0}/me?fields={1}&access_token={2}", apiVersion, fields, access_token);
+            
+            var apiEndpointUrl = FacebookBaseUrl + string.Format("/me?fields={0}&access_token={1}", fields, access_token);
 
             var getUserDetailsTask = await client.GetAsync(apiEndpointUrl).ConfigureAwait(false);
             if (getUserDetailsTask.IsSuccessStatusCode)
@@ -30,7 +37,6 @@ namespace Match.AI
 
                 // Make API call to fetch user's personality insights
                 var values = new List<KeyValuePair<string, string>>();
-                //TODO : generate the text from the user's post's message data. Clean it up to remove invalid characters and send to bluemix.
                 List<string> messages = new List<string>();
                 if (App.User.posts != null)
                 {
@@ -63,7 +69,7 @@ namespace Match.AI
 
                 var content = new FormUrlEncodedContent(values);
                 var client2 = new HttpClient();
-                var response = await client2.PostAsync("http://xlab.mybluemix.net/map", content).ConfigureAwait(false);
+                var response = await client2.PostAsync(BluemixMapUrl, content).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonOut = await response.Content.ReadAsStringAsync();
@@ -72,7 +78,7 @@ namespace Match.AI
 
                     // Make API call to do bulk match of personalities and retreive the PMI
                     var client3 = new HttpClient();
-                    var matchResponse = await client3.PostAsync("http://xlab.mybluemix.net/bulk_match", content).ConfigureAwait(false);
+                    var matchResponse = await client3.PostAsync(BluemixBulkMatchUrl, content).ConfigureAwait(false);
                     if (matchResponse.IsSuccessStatusCode)
                     {
                         var matchDataString = await matchResponse.Content.ReadAsStringAsync();
