@@ -34,7 +34,7 @@ namespace Match.AI.Pages
 
             var where = new Label
             {
-                Text = "Phoenix, AZ 85044",
+                Text = "Bengaluru, India",
                 TextColor = Color.FromHex("#ddd"),
                 FontFamily = "AvenirNextCondensed-Medium"
             };
