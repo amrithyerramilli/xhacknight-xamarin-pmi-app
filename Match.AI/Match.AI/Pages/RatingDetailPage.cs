@@ -60,10 +60,11 @@ namespace Match.AI.Pages
             distanceLabel.SetBinding(Label.TextProperty, "User.bio");
             var onLineLabel = new Label()
             {
+                Text = "PMI :",
                 TextColor = Color.FromHex("#F2995D"),
                 FontSize = 12,
             };
-            onLineLabel.SetBinding(Label.TextProperty, new Binding("User.MatchData[0].Name", stringFormat: "PMI : {0}"));
+            //onLineLabel.SetBinding(Label.TextProperty, "PMI : ");
 
             var offLineLabel = new Label()
             {
