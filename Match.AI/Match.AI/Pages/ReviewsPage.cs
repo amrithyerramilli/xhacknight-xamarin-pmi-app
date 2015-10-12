@@ -9,6 +9,7 @@ namespace Match.AI.Pages
 {
     public class ReviewsPage : ContentPage
     {
+        public static Random Rand = new Random();
         public ReviewsPage()
         {
             var movies = InitializeMovies();
@@ -107,7 +108,7 @@ namespace Match.AI.Pages
         {
             var x = new List<MovieRating>();
             if (App.AppUsers != null)
-                x.AddRange(App.AppUsers.Select(appUser => new MovieRating() { User = appUser, Value = new Random().Next(1, 5) }));
+                x.AddRange(App.AppUsers.Select(appUser => new MovieRating() { User = appUser, Value = Rand.Next(1, 10) }));
             return x;
         }
     }
